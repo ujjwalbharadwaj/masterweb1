@@ -1,7 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { DataGrid } from "@material-ui/data-grid";
-import { AiOutlineDelete, AiOutlineGift, AiOutlineFileAdd } from "react-icons/ai";
+import {
+  AiOutlineDelete,
+  AiOutlineGift,
+  AiOutlineFileAdd,
+} from "react-icons/ai";
 import { MdOutlineLocalOffer } from "react-icons/md";
 import { Button } from "@material-ui/core";
 import styles from "../../styles/styles";
@@ -24,12 +28,12 @@ const AllSellers = () => {
 
   const handleDelete = async (id) => {
     await axios
-    .delete(`${server}/shop/delete-seller/${id}`, { withCredentials: true })
-    .then((res) => {
-      toast.success(res.data.message);
-    });
+      .delete(`${server}/shop/delete-seller/${id}`, { withCredentials: true })
+      .then((res) => {
+        toast.success(res.data.message);
+      });
 
-  dispatch(getAllSellers());
+    dispatch(getAllSellers());
   };
 
   const columns = [
@@ -64,62 +68,62 @@ const AllSellers = () => {
       flex: 0.8,
     },
     {
-        field: "  ",
-        flex: 1,
-        minWidth: 150,
-        headerName: "Create Product",
-        type: "number",
-        sortable: false,
-        renderCell: (params) => {
-          return (
-            <>
+      field: "  ",
+      flex: 1,
+      minWidth: 150,
+      headerName: "Create Product",
+      type: "number",
+      sortable: false,
+      renderCell: (params) => {
+        return (
+          <>
             <Link to={`/dashboard-create-product/${params.id}`}>
-            <Button >
-            <AiOutlineFileAdd size={20} />
+              <Button>
+                <AiOutlineFileAdd size={20} />
               </Button>
             </Link>
-            </>
-          );
-        },
+          </>
+        );
       },
-      {
-        field: "j",
-        flex: 1,
-        minWidth: 150,
-        headerName: "Create Event",
-        type: "number",
-        sortable: false,
-        renderCell: (params) => {
-          return (
-            <>
-              <Link to={`/dashboard-create-event/${params.id}`}>
-                <Button>
-                  <MdOutlineLocalOffer size={20} />
-                </Button>
-              </Link>
-            </>
-          );
-        },
+    },
+    {
+      field: "j",
+      flex: 1,
+      minWidth: 150,
+      headerName: "Create Event",
+      type: "number",
+      sortable: false,
+      renderCell: (params) => {
+        return (
+          <>
+            <Link to={`/dashboard-create-event/${params.id}`}>
+              <Button>
+                <MdOutlineLocalOffer size={20} />
+              </Button>
+            </Link>
+          </>
+        );
       },
-      {
-        field: "kk",
-        flex: 1,
-        minWidth: 150,
-        headerName: "Create Coupan",
-        type: "number",
-        sortable: false,
-        renderCell: (params) => {
-          return (
-            <>
-              <Link to={`/dashboard-create-coupan/${params.id}`}>
-                <Button>
-                  <AiOutlineGift size={20} />
-                </Button>
-              </Link>
-            </>
-          );
-        },
+    },
+    {
+      field: "kk",
+      flex: 1,
+      minWidth: 150,
+      headerName: "Create Coupan",
+      type: "number",
+      sortable: false,
+      renderCell: (params) => {
+        return (
+          <>
+            <Link to={`/dashboard-create-coupan/${params.id}`}>
+              <Button>
+                <AiOutlineGift size={20} />
+              </Button>
+            </Link>
+          </>
+        );
       },
+    },
     {
       field: " ",
       flex: 1,
@@ -141,7 +145,7 @@ const AllSellers = () => {
 
   const row = [];
   sellers &&
-  sellers.forEach((item) => {
+    sellers.forEach((item) => {
       row.push({
         id: item._id,
         name: item?.name,
@@ -182,7 +186,7 @@ const AllSellers = () => {
                 </div>
                 <div
                   className={`${styles.button} text-white text-[18px] !h-[42px] ml-4`}
-                  onClick={() =>  setOpen(false) || handleDelete(userId)}
+                  onClick={() => setOpen(false) || handleDelete(userId)}
                 >
                   confirm
                 </div>
