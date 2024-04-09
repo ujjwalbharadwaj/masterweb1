@@ -1,5 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { AiOutlinePlusCircle, AiOutlineMinusCircle ,AiOutlineClose} from "react-icons/ai";
+import {
+  AiOutlinePlusCircle,
+  AiOutlineMinusCircle,
+  AiOutlineClose,
+} from "react-icons/ai";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { createProduct } from "../../redux/actions/product";
@@ -11,9 +15,9 @@ import {
   fabric,
   occasion,
   fit,
-  gender,  
+  gender,
 } from "../../static/data";
-import { useParams } from 'react-router-dom';
+import { useParams } from "react-router-dom";
 
 import { toast } from "react-toastify";
 import { Circles } from "react-loader-spinner";
@@ -22,7 +26,7 @@ const CreateProduct = () => {
   // const { seller } = useSelector((state) => state.seller);
 
   let { id } = useParams();
-  const seller=id;
+  const seller = id;
   const { success, error } = useSelector((state) => state.products);
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -44,16 +48,52 @@ const CreateProduct = () => {
   const [selectedOccasion, setSelectedOccasion] = useState("");
   const [selectedFit, setSelectedFit] = useState("");
   const [selectedGender, setSelectedGender] = useState("");
-  const [sizesAndQuantities, setSizesAndQuantities] = useState([{ size: "", quantity: 0 }]);
+  const [sizesAndQuantities, setSizesAndQuantities] = useState([
+    { size: "", quantity: 0 },
+  ]);
 
   const sizes = [
-    '2XS', 'XS', 'S', 'M', 'L', 'XL', '2XL', '3XL', '4XL', '5XL', '6XL', '7XL', '8XL',
-    '0 - 1 Month', '1 - 2 Months', '2 - 3 Months', '3 - 4 Months', '4 - 5 Months', '5 - 6 Months', 
-    '6 - 7 Months', '7 - 8 Months', '8 - 9 Months', '9 - 10 Months', '10 - 11 Months', '11 - 12 Months', 
-    '1 - 2 Years', '2 - 3 Years', '3 - 4 Years', '4 - 5 Years', '5 - 6 Years', '6 - 7 Years', '7 - 8 Years', 
-    '8 - 9 Years', '9 - 10 Years', '10 - 11 Years', '11 - 12 Years', '12 - 13 Years', '13 - 14 Years', 
-    '14 - 15 Years', '15 - 16 Years'
-  ];  
+    "2XS",
+    "XS",
+    "S",
+    "M",
+    "L",
+    "XL",
+    "2XL",
+    "3XL",
+    "4XL",
+    "5XL",
+    "6XL",
+    "7XL",
+    "8XL",
+    "0 - 1 Month",
+    "1 - 2 Months",
+    "2 - 3 Months",
+    "3 - 4 Months",
+    "4 - 5 Months",
+    "5 - 6 Months",
+    "6 - 7 Months",
+    "7 - 8 Months",
+    "8 - 9 Months",
+    "9 - 10 Months",
+    "10 - 11 Months",
+    "11 - 12 Months",
+    "1 - 2 Years",
+    "2 - 3 Years",
+    "3 - 4 Years",
+    "4 - 5 Years",
+    "5 - 6 Years",
+    "6 - 7 Years",
+    "7 - 8 Years",
+    "8 - 9 Years",
+    "9 - 10 Years",
+    "10 - 11 Years",
+    "11 - 12 Years",
+    "12 - 13 Years",
+    "13 - 14 Years",
+    "14 - 15 Years",
+    "15 - 16 Years",
+  ];
   useEffect(() => {
     if (error) {
       toast.error(error);
@@ -67,20 +107,23 @@ const CreateProduct = () => {
 
   const handleImageChange = (e) => {
     const files = Array.from(e.target.files);
-
-    setImages([]);
-
+    const newImages = [];
+  
     files.forEach((file) => {
       const reader = new FileReader();
-
+  
       reader.onload = () => {
-        if (reader.readyState === 2) {
-          setImages((old) => [...old, reader.result]);
+        newImages.push(reader.result);
+  
+        if (newImages.length === files.length) {
+          setImages((prevImages) => [...prevImages, ...newImages]);
         }
       };
+  
       reader.readAsDataURL(file);
     });
   };
+  
   const handleDeleteImage = (index) => {
     const newImages = [...images];
     newImages.splice(index, 1);
@@ -96,7 +139,7 @@ const CreateProduct = () => {
     setSizesAndQuantities(updatedSizesAndQuantities);
   };
 
-  const handleSubmit =  (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     setLoading(true);
 
@@ -120,8 +163,10 @@ const CreateProduct = () => {
     //   gender: selectedGender,
     //   shopId: seller._id,
     // });
-    const stockData = sizesAndQuantities.map(({ size, quantity }) => ({ size, quantity }));
-
+    const stockData = sizesAndQuantities.map(({ size, quantity }) => ({
+      size,
+      quantity,
+    }));
 
     const newForm = new FormData();
 
@@ -146,34 +191,33 @@ const CreateProduct = () => {
     newForm.append("gender", selectedGender);
     newForm.append("shopId", seller._id);
 
-     dispatch(
-        createProduct({
-          name,
-          description,
-          tags,
-          ShopPrice,
-          originalPrice,
-          discountPrice,
-          stock: stockData,
-          category,
-          neckType: selectedNeckType,
-          sleeveType: selectedSleeveType,
-          brand: selectedBrand,
-          color: selectedColor,
-          fabric: selectedFabric,
-          occasion: selectedOccasion,
-          fit: selectedFit,
-          gender: selectedGender,
-          shopId: seller,
-          images,
-        })
-      );
-    } 
-
+    dispatch(
+      createProduct({
+        name,
+        description,
+        tags,
+        ShopPrice,
+        originalPrice,
+        discountPrice,
+        stock: stockData,
+        category,
+        neckType: selectedNeckType,
+        sleeveType: selectedSleeveType,
+        brand: selectedBrand,
+        color: selectedColor,
+        fabric: selectedFabric,
+        occasion: selectedOccasion,
+        fit: selectedFit,
+        gender: selectedGender,
+        shopId: seller,
+        images,
+      })
+    );
+  };
 
   return (
-<div className="w-[90%] 800px:w-[50%] bg-blue-50 shadow h-[80vh] rounded-[4px] p-3 overflow-y-scroll">     
- <h5 className="text-[30px] font-Poppins text-center">Create Product</h5>
+    <div className="w-[90%] 800px:w-[50%] bg-blue-50 shadow h-[80vh] rounded-[4px] p-3 overflow-y-scroll">
+      <h5 className="text-[30px] font-Poppins text-center">Create Product</h5>
       <form onSubmit={handleSubmit}>
         <br />
         <div>
@@ -207,7 +251,7 @@ const CreateProduct = () => {
           ></textarea>
         </div>
         <br />
-        
+
         <div>
           <label className="pb-2">Tags</label>
           <input
@@ -259,56 +303,59 @@ const CreateProduct = () => {
         </div>
         <br />
         <div>
-            <label className="pb-2">Size and Quantity</label>
-            {sizesAndQuantities.map((item, index) => (
-              <div key={index} className="flex mt-2">
-                <select
-                  className="w-1/2 border h-[35px] rounded-[5px] mr-2"
-                  value={item.size}
-                  onChange={(e) => {
-                    const updatedSizesAndQuantities = [...sizesAndQuantities];
-                    updatedSizesAndQuantities[index].size = e.target.value;
-                    setSizesAndQuantities(updatedSizesAndQuantities);
-                  }}
-                >
-                  <option value="">Select size</option>
-                  {sizes.map((size) => (
-                    <option value={size} key={size}>
-                      {size}
-                    </option>
-                  ))}
-                </select>
-                <input
-                  type="number"
-                  value={item.quantity}
-                  onChange={(e) => {
-                    const updatedSizesAndQuantities = [...sizesAndQuantities];
-                    updatedSizesAndQuantities[index].quantity = parseInt(e.target.value, 10);
-                    setSizesAndQuantities(updatedSizesAndQuantities);
-                  }}
-                  placeholder="Enter product quantity..."
-                  className="w-1/2 border h-[35px] rounded-[5px] mr-2 px-3"
+          <label className="pb-2">Size and Quantity</label>
+          {sizesAndQuantities.map((item, index) => (
+            <div key={index} className="flex mt-2">
+              <select
+                className="w-1/2 border h-[35px] rounded-[5px] mr-2"
+                value={item.size}
+                onChange={(e) => {
+                  const updatedSizesAndQuantities = [...sizesAndQuantities];
+                  updatedSizesAndQuantities[index].size = e.target.value;
+                  setSizesAndQuantities(updatedSizesAndQuantities);
+                }}
+              >
+                <option value="">Select size</option>
+                {sizes.map((size) => (
+                  <option value={size} key={size}>
+                    {size}
+                  </option>
+                ))}
+              </select>
+              <input
+                type="number"
+                value={item.quantity}
+                onChange={(e) => {
+                  const updatedSizesAndQuantities = [...sizesAndQuantities];
+                  updatedSizesAndQuantities[index].quantity = parseInt(
+                    e.target.value,
+                    10
+                  );
+                  setSizesAndQuantities(updatedSizesAndQuantities);
+                }}
+                placeholder="Enter product quantity..."
+                className="w-1/2 border h-[35px] rounded-[5px] mr-2 px-3"
+              />
+              {index === sizesAndQuantities.length - 1 && (
+                <AiOutlinePlusCircle
+                  size={30}
+                  className="mt-1 cursor-pointer"
+                  color="#555"
+                  onClick={handleAddSizeQuantity}
                 />
-                {index === sizesAndQuantities.length - 1 && (
-                  <AiOutlinePlusCircle
-                    size={30}
-                    className="mt-1 cursor-pointer"
-                    color="#555"
-                    onClick={handleAddSizeQuantity}
-                  />
-                )}
-                {index !== sizesAndQuantities.length - 1 && (
-                  <AiOutlineMinusCircle
-                    size={30}
-                    className="mt-1 cursor-pointer"
-                    color="red"
-                    onClick={() => handleRemoveSizeQuantity(index)}
-                  />
-                )}
-              </div>
-            ))}
-          </div>
-          <br />
+              )}
+              {index !== sizesAndQuantities.length - 1 && (
+                <AiOutlineMinusCircle
+                  size={30}
+                  className="mt-1 cursor-pointer"
+                  color="red"
+                  onClick={() => handleRemoveSizeQuantity(index)}
+                />
+              )}
+            </div>
+          ))}
+        </div>
+        <br />
         <div>
           <label className="pb-2">
             Category <span className="text-red-500">*</span>
@@ -469,26 +516,63 @@ const CreateProduct = () => {
             <label htmlFor="upload">
               <AiOutlinePlusCircle size={30} className="mt-3" color="#555" />
             </label>
-            {images &&
-  images.map((image, index) => (
-    <img
-      src={image}
-      key={index} // Use index as the key
-      alt=""
-      className="h-[120px] w-[120px] object-cover m-2"
-    />
-  ))}
-
+            {/* {images &&
+              images.map((image, index) => (
+                <img
+                  src={image}
+                  key={index} // Use index as the key
+                  alt=""
+                  className="h-[120px] w-[120px] object-cover m-2"
+                />
+              ))} */}
           </div>
-        
+          {/* Update to display delete buttons next to each image */}
+          <div className="w-full flex items-center flex-wrap">
+            {images &&
+              images.map((image, index) => (
+                <div key={index} className="relative">
+                  <img
+                    src={image}
+                    alt={`Product ${index + 1}`}
+                    className="h-[120px] w-[120px] object-cover m-2"
+                  />
+                  <button
+                    onClick={() => handleDeleteImage(index)}
+                    className="absolute top-0 right-0 bg-red-500 text-white p-1 rounded-full"
+                  >
+                    <AiOutlineClose />
+                  </button>
+                </div>
+              ))}
+          </div>
+          <br />
         </div>
+        
 
         <div>
-          <input
-            type="submit"
-            value="Create"
-            className="mt-2 cursor-pointer appearance-none text-center block w-full px-3 h-[35px] border border-gray-300 rounded-[3px] placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-          />
+          {loading ? (
+            <div
+              style={{
+                width: "100%",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <Circles
+                height={50}
+                width={50}
+                color="cyan"
+                ariaLabel="circles-loading"
+              />
+            </div>
+          ) : (
+            <input
+              type="submit"
+              value="Create"
+              className="mt-2 cursor-pointer appearance-none text-center block w-full px-3 h-[35px] border border-gray-300 rounded-[3px] placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+            />
+          )}
         </div>
       </form>
     </div>

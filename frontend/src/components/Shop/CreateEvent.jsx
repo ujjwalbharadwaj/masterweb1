@@ -1,5 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { AiOutlinePlusCircle, AiOutlineMinusCircle } from "react-icons/ai";
+import {
+  AiOutlinePlusCircle,
+  AiOutlineMinusCircle,
+  AiOutlineClose,
+} from "react-icons/ai";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { categoriesData } from "../../static/data";
@@ -11,8 +15,8 @@ import { useParams } from "react-router-dom";
 const CreateEvent = () => {
   // const { seller } = useSelector((state) => state.seller);
   const { success, error } = useSelector((state) => state.events);
-  const {id}=useParams()
-  const seller=id;
+  const { id } = useParams();
+  const seller = id;
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -24,7 +28,7 @@ const CreateEvent = () => {
   const [originalPrice, setOriginalPrice] = useState();
   const [discountPrice, setDiscountPrice] = useState();
   const [sizesAndQuantities, setSizesAndQuantities] = useState([
-    { size: "", quantity: 0 }
+    { size: "", quantity: 0 },
   ]);
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
@@ -70,20 +74,18 @@ const CreateEvent = () => {
     "12 - 13 Years",
     "13 - 14 Years",
     "14 - 15 Years",
-    "15 - 16 Years"
+    "15 - 16 Years",
   ];
   const handleStartDateChange = (e) => {
     const startDate = new Date(e.target.value);
     const minEndDate = new Date(startDate.getTime() + 3 * 24 * 60 * 60 * 1000);
     setStartDate(startDate);
-    document.getElementById("start-date").min = startDate.toISOString().slice(
-      0,
-      10
-    );
-    document.getElementById("end-date").min = minEndDate.toISOString().slice(
-      0,
-      10
-    );
+    document.getElementById("start-date").min = startDate
+      .toISOString()
+      .slice(0, 10);
+    document.getElementById("end-date").min = minEndDate
+      .toISOString()
+      .slice(0, 10);
   };
 
   const handleEndDateChange = (e) => {
@@ -104,29 +106,40 @@ const CreateEvent = () => {
       toast.error(error);
     }
     if (success) {
-      toast.success("Event created successfully!",{
-        autoClose:5000000  })   
-        navigate("/admin-events");
-        // navigate("/admin-sellers");
+      toast.success("Event created successfully!", {
+        autoClose: 5000000,
+      });
+      navigate("/admin-events");
+      // navigate("/admin-sellers");
       window.location.reload();
     }
   }, [dispatch, error, success]);
 
   const handleImageChange = (e) => {
     const files = Array.from(e.target.files);
-
-    setImages([]);
+    const newImages = [];
 
     files.forEach((file) => {
       const reader = new FileReader();
 
       reader.onload = () => {
-        if (reader.readyState === 2) {
-          setImages((old) => [...old, reader.result]);
+        newImages.push(reader.result);
+
+        if (newImages.length === files.length) {
+          setImages((prevImages) => [...prevImages, ...newImages]);
         }
       };
+
       reader.readAsDataURL(file);
     });
+  };
+
+  //Function to delete an image from the list of selected images
+
+  const handleDeleteImage = (index) => {
+    const newImages = [...images];
+    newImages.splice(index, 1);
+    setImages(newImages);
   };
   const handleAddSizeQuantity = () => {
     setSizesAndQuantities([...sizesAndQuantities, { size: "", quantity: 0 }]);
@@ -145,7 +158,7 @@ const CreateEvent = () => {
     const newForm = new FormData();
     const stockData = sizesAndQuantities.map(({ size, quantity }) => ({
       size,
-      quantity
+      quantity,
     }));
 
     images.forEach((image) => {
@@ -162,21 +175,22 @@ const CreateEvent = () => {
       shopId: seller,
       images,
       start_Date: startDate?.toISOString(),
-      Finish_Date: endDate?.toISOString()
+      Finish_Date: endDate?.toISOString(),
     };
-    console.log("sdflllsd")
+    console.log("sdflllsd");
     try {
       await dispatch(createevent(data));
       toast.success("Event created successfully!");
       // navigate("/dashboard-events");
       window.location.reload();
-      console.log("sdfsd")
+      console.log("sdfsd");
       setLoading(false);
     } catch (error) {
       // Handle error
-      console.log("ffff",error)
+      console.log("ffff", error);
       setLoading(false);
-    }  };
+    }
+  };
 
   return (
     <div className="w-[90%] 800px:w-[50%] bg-white  shadow h-[80vh] rounded-[4px] p-3 overflow-y-scroll">
@@ -375,7 +389,7 @@ const CreateEvent = () => {
             <label htmlFor="upload">
               <AiOutlinePlusCircle size={30} className="mt-3" color="#555" />
             </label>
-            {images &&
+            {/* {images &&
               images.map((i) => (
                 <img
                   src={i}
@@ -383,26 +397,55 @@ const CreateEvent = () => {
                   alt=""
                   className="h-[120px] w-[120px] object-cover m-2"
                 />
+              ))} */}
+          </div>
+
+          {/* Update to display delete buttons next to each image */}
+          <div className="w-full flex items-center flex-wrap">
+            {images &&
+              images.map((image, index) => (
+                <div key={index} className="relative">
+                  <img
+                    src={image}
+                    alt={`Product ${index + 1}`}
+                    className="h-[120px] w-[120px] object-cover m-2"
+                  />
+                  <button
+                    onClick={() => handleDeleteImage(index)}
+                    className="absolute top-0 right-0 bg-red-500 text-white p-1 rounded-full"
+                  >
+                    <AiOutlineClose />
+                  </button>
+                </div>
               ))}
           </div>
           <br />
-          <div>
+        </div>
+
+        <div>
           {loading ? (
-                <div style={{ width: "100%", display: "flex",justifyContent:"center",alignItems:"center" }}>
-                  <Circles
-                      height={50}
-                      width={50}
-                      color="cyan"
-                      ariaLabel="circles-loading"
-                    />
-                    </div>
-              ) : (
+            <div
+              style={{
+                width: "100%",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <Circles
+                height={50}
+                width={50}
+                color="cyan"
+                ariaLabel="circles-loading"
+              />
+            </div>
+          ) : (
             <input
               type="submit"
               value="Create"
               className="mt-2 cursor-pointer appearance-none text-center block w-full px-3 h-[35px] border border-gray-300 rounded-[3px] placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-              />)}
-              </div>
+            />
+          )}
         </div>
       </form>
     </div>
