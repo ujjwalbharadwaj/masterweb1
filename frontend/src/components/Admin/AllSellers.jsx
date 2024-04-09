@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { DataGrid } from "@material-ui/data-grid";
-import { AiOutlineDelete, AiOutlineEye } from "react-icons/ai";
+import { AiOutlineDelete, AiOutlineGift, AiOutlineFileAdd } from "react-icons/ai";
+import { MdOutlineLocalOffer } from "react-icons/md";
 import { Button } from "@material-ui/core";
 import styles from "../../styles/styles";
 import { RxCross1 } from "react-icons/rx";
 import axios from "axios";
 import { server } from "../../server";
-import CreateProduct from "../Shop/CreateProduct"
 import { toast } from "react-toastify";
 import { getAllSellers } from "../../redux/actions/sellers";
 import { Link } from "react-router-dom";
@@ -37,7 +37,7 @@ const AllSellers = () => {
 
     {
       field: "name",
-      headerName: "name",
+      headerName: "Name",
       minWidth: 130,
       flex: 0.7,
     },
@@ -58,7 +58,7 @@ const AllSellers = () => {
 
     {
       field: "joinedAt",
-      headerName: "joinedAt",
+      headerName: "JoinedAt",
       type: "text",
       minWidth: 130,
       flex: 0.8,
@@ -67,7 +67,7 @@ const AllSellers = () => {
         field: "  ",
         flex: 1,
         minWidth: 150,
-        headerName: "Create Shop",
+        headerName: "Create Product",
         type: "number",
         sortable: false,
         renderCell: (params) => {
@@ -75,7 +75,7 @@ const AllSellers = () => {
             <>
             <Link to={`/dashboard-create-product/${params.id}`}>
             <Button >
-            <AiOutlineEye size={20} />
+            <AiOutlineFileAdd size={20} />
               </Button>
             </Link>
             </>
@@ -83,7 +83,7 @@ const AllSellers = () => {
         },
       },
       {
-        field: "",
+        field: "j",
         flex: 1,
         minWidth: 150,
         headerName: "Create Event",
@@ -94,7 +94,7 @@ const AllSellers = () => {
             <>
               <Link to={`/dashboard-create-event/${params.id}`}>
                 <Button>
-                  <AiOutlineEye size={20} />
+                  <MdOutlineLocalOffer size={20} />
                 </Button>
               </Link>
             </>
@@ -113,7 +113,7 @@ const AllSellers = () => {
             <>
               <Link to={`/dashboard-create-coupan/${params.id}`}>
                 <Button>
-                  <AiOutlineEye size={20} />
+                  <AiOutlineGift size={20} />
                 </Button>
               </Link>
             </>
@@ -154,7 +154,7 @@ const AllSellers = () => {
   return (
     <div className="w-full flex justify-center pt-5">
       <div className="w-[97%]">
-        <h3 className="text-[22px] font-Poppins pb-2">All Users</h3>
+        <h3 className="text-[22px] font-Poppins pb-2">All Sellers</h3>
         <div className="w-full min-h-[45vh] bg-white rounded">
           <DataGrid
             rows={row}

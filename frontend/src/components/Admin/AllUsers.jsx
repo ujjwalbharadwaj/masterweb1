@@ -36,7 +36,7 @@ const AllUsers = () => {
 
     {
       field: "name",
-      headerName: "name",
+      headerName: "Name",
       minWidth: 130,
       flex: 0.7,
     },
