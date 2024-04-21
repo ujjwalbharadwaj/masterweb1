@@ -325,17 +325,9 @@ const Header = ({ activeHeading }) => {
           </div>
         </div>
       </div>
-
-      {/* <div className="mt-[60px] bg-white w-full">
-        <div className="container mx-auto p-4">
-        </div>
-      </div> */}
-
-<div className="mt-[60px] bg-white w-full md:block hidden">
-    <div className="container mx-auto p-4">
-       
-    </div>
-</div>
+      <div className="mt-[60px] bg-white w-full md:block hidden">
+        <div className="container mx-auto p-4"></div>
+      </div>
 
       {/* mobile header */}
       <div
@@ -450,7 +442,7 @@ const Header = ({ activeHeading }) => {
         )}
         {/* search bar */}
         <div
-          className={`sticky top-[60px] z-[10] bg-white my-1 w-full m-auto h-[40px relative] block 800px:hidden`}
+          className={`sticky top-[60px] z-[0] bg-white my-1 w-full m-auto h-[40px relative] block 800px:hidden`}
           ref={mobileInputRef}
         >
           <input
