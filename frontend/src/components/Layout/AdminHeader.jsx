@@ -24,7 +24,7 @@ const AdminHeader = () => {
       </div>
       <div className="flex items-center">
         <div className="flex items-center mr-4">
-          <Link to="/dashboard-create-coupan{param._id}" className="800px:block hidden">
+          <Link to="/admin-dashboard-coupan" className="800px:block hidden">
             <AiOutlineGift
               color="#555"
               size={30}

@@ -302,6 +302,9 @@ const Header = ({ activeHeading }) => {
                               Orders
                             </Link>{" "}
                             {/* Add Orders link */}
+                            <button className="block px-4 py-2 text-gray-800 hover:bg-gray-200 w-full text-left">
+                              Logout
+                            </button>
                           </div>
                         )}
                       </div>
